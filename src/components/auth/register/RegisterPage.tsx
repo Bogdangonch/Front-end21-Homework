@@ -32,7 +32,7 @@ const RegisterPage = () => {
       <h1 className="text-center">Реєстрація на сайті</h1>
       <form onSubmit={onSubmitHandler} className="col-md-6 offset-md-3">
         <div className="mb-3">
-          <label htmlFor="email" className="form-label">
+          <label htmlFor="username" className="form-label">
             Ваше ім'я
           </label>
           <input
