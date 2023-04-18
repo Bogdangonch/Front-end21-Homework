@@ -22,7 +22,8 @@ const LoginPage = () => {
     //setData({email: "pylyp", password: "123456"});
   };
 
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => { //--------------------------------------------------- не розуміємо цей запис. А саме (e: ChangeEvent<HTMLInputElement>) 
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    //--------------------------------------------------- не розуміємо цей запис. А саме (e: ChangeEvent<HTMLInputElement>)
     // console.log("Щось вводити в інтпут");
     console.log(e.target.name, e.target.value);
     setData({ ...data, [e.target.name]: e.target.value }); // ---------------------------------------------------"..." - оператор spread?
@@ -30,10 +31,10 @@ const LoginPage = () => {
   return (
     <>
       <h1 className="text-center">Вхід на сайт</h1>
-      <form onSubmit={onSubmitHandler} className="col-md-6 offset-md-3">  
-        <InputGroup                                                      //---------------------------------------------------onSubmit={onSubmitHandler}= ми так розуємо що це подія?
+      <form onSubmit={onSubmitHandler} className="col-md-6 offset-md-3">
+        <InputGroup //---------------------------------------------------onSubmit={onSubmitHandler}= ми так розуємо що це подія.?
           label="Електронна адреса" //--------------------------------------------------- label - шось типу хеадера?
-          field="email" // ---------------------------------------------------ми тут не задаємо тип а пишемо через Field чому? 
+          field="email" // ---------------------------------------------------ми тут не задаємо тип а пишемо через Field чому?
           value={data.email}
           onChange={onChangeHandler}
         />
