@@ -6,8 +6,7 @@ import InputGroup from "../../../common/InputGroup";
 import { ICategoryCreate } from "../types";
 
 const CategoryCreatePage = () => {
-
-    //створили конкретни екземлеяр на основі нашого інтерфейсу
+  //створили конкретни екземлеяр на основі нашого інтерфейсу
   const init: ICategoryCreate = {
     title: "",
     urlSlug: "",
@@ -21,10 +20,10 @@ const CategoryCreatePage = () => {
   const onSubmitHandler = async (e: any) => {
     e.preventDefault();
     console.log("Ми відправляємо на сервер", data);
-    try{
+    try {
       const result = await http.post("api/categories/add", data);
-      navigator("/");
-    } catch(err: any) {
+      navigator("/admin/categories/list");
+    } catch (err: any) {
       console.log("Bad request", err);
     }
   };
@@ -57,7 +56,7 @@ const CategoryCreatePage = () => {
           type="number"
           onChange={onChangeHandler}
         />
-        
+
         <InputFileGroup
           label="Оберіть фото для категорії"
           field="image"
