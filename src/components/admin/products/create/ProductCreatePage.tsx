@@ -4,19 +4,23 @@ import { useFormik } from "formik";
 import InputGroup from "../../../common/InputGroup";
 import { useEffect, useState } from "react";
 import http from "../../../../http_common";
+import InputFileGroup from "../../../common/InputFileGroup";
+import InputFileProductGroup from "../../../common/InputFileProductGroup";
+import { useNavigate } from "react-router-dom";
+import classNames from "classnames";
 
 const ProductCreatePage = () => {
+  const navigate = useNavigate();
 
-    const [categories, setCategories] = useState<ICategorySelect[]>([]);
+  const [categories, setCategories] = useState<ICategorySelect[]>([]);
 
-    useEffect(() => {
-      http.get<ICategorySelect[]>("api/categories/list")
-        .then(resp => {
-            setCategories(resp.data);
-            console.log("categories", resp.data);
-        });
-    }, []);
-    
+  useEffect(() => {
+    http.get<ICategorySelect[]>("api/categories/list").then((resp) => {
+      setCategories(resp.data);
+      //console.log("categories", resp.data);
+    });
+  }, []);
+
   //створили конкретни екземлеяр на основі нашого інтерфейсу
   const init: IProductCreate = {
     name: "",
@@ -27,24 +31,46 @@ const ProductCreatePage = () => {
     price: 0,
   };
 
-  const onFormikSubmit=async (values: IProductCreate) => {
-    console.log("Formik submit data", values);
-  }
+  const onFormikSubmit = async (values: IProductCreate) => {
+    //console.log("Formik submit data", values);
+    try {
+      await http.post("api/products/add", values);
+      navigate("..");
+    } catch (error) {
+      console.log("Send data server error");
+    }
+  };
 
   const validSchema = yup.object({
     name: yup.string().required("Вкажіть назву"),
-    priority: yup.string().required("Вкажіть пріорітет"),
-    categoryId: yup.string().required("Вкажіть категорію"),
+    priority: yup
+      .number()
+      .min(1, "Пріорітет має бути більшим 0")
+      .required("Вкажіть пріорітет"),
+    categoryId: yup.number().min(1, "Вкажіть категорію"),
     description: yup.string().required("Вкажіть опис"),
     price: yup.string().required("Вкажіть ціну"),
+    ids: yup
+      .array()
+      .of(yup.number())
+      .min(1, "Мінімального одна фотка для товару")
+      .required("Оберіть хочаб одне фото"),
   });
 
   const formik = useFormik({
     initialValues: init,
     onSubmit: onFormikSubmit,
-    validationSchema: validSchema
+    validationSchema: validSchema,
   });
-  const { values, touched, errors, handleSubmit, handleChange, setFieldValue, setFieldError } = formik;
+  const {
+    values,
+    touched,
+    errors,
+    handleSubmit,
+    handleChange,
+    setFieldValue,
+    setFieldError,
+  } = formik;
 
   return (
     <>
@@ -75,7 +101,7 @@ const ProductCreatePage = () => {
           error={errors.description}
           touched={touched.description}
         />
-        
+
         <InputGroup
           label="Ціна"
           field="price"
@@ -91,21 +117,39 @@ const ProductCreatePage = () => {
             Оберіть категорію
           </label>
           <select
-            className="form-select"
+            className={classNames("form-select", {
+              "is-invalid": errors.categoryId && touched.categoryId,
+            })}
             defaultValue={values.categoryId}
             aria-label="Default select example"
             onChange={handleChange}
             name="categoryId"
             id="categoryid"
           >
-            <option value="0" disabled>Оберіть категорію</option>
-            {categories.map(item => {
-                return (
-                    <option value={item.id} key={item.id}>{item.title}</option>
-                );
+            <option value="0" disabled>
+              Оберіть категорію
+            </option>
+            {categories.map((item) => {
+              return (
+                <option value={item.id} key={item.id}>
+                  {item.title}
+                </option>
+              );
             })}
           </select>
         </div>
+
+        <InputFileProductGroup
+          label="Оберіть фото товару"
+          field="imageSelect"
+          error={errors.ids}
+          touched={touched.ids}
+          onSelectFile={(id) => {
+            setFieldValue("ids", [...values.ids, id]);
+            //console.log("Select image", id);
+            //setData({ ...data, image: base64 });
+          }}
+        />
 
         <button type="submit" className="btn btn-primary">
           Створити товар

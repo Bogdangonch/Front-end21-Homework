@@ -15,20 +15,22 @@ import ProductCreatePage from "./components/admin/products/create/ProductCreateP
 const App = () => {
   return (
     <>
-        <Routes>
-          <Route path="/" element={<DefaultLayout/>}>
-            <Route index element={<HomePage />} />
-            <Route path="login" element={<LoginPage/>} />
-            <Route path="register" element={<RegisterPage/>} />
-          </Route>
+      <Routes>
+        <Route path="/" element={<DefaultLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="register" element={<RegisterPage />} />
+        </Route>
 
-          <Route path="/admin" element={<AdminLayout/>}>
-            <Route path="categories/create" element={<CategoryCreatePage/>} />
-            <Route path="categories/list" element={<CategoriesListPage/>} />
-            <Route path="products/list" element={<ProductsListPage/>} />
-            <Route path="products/create" element={<ProductCreatePage/>} />
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route path="categories/create" element={<CategoryCreatePage />} />
+          <Route path="categories/list" element={<CategoriesListPage />} />
+          <Route path="products">
+            <Route index element={<ProductsListPage />} />
+            <Route path="create" element={<ProductCreatePage />} />
           </Route>
-        </Routes>
+        </Route>
+      </Routes>
     </>
   );
 };
