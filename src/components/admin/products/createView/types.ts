@@ -1,10 +1,14 @@
+export interface IProductImage {
+  id: number;
+  name: string;
+}
 interface IProduct {
   id: number;
   name: string;
   priority: number;
   categoryId: number;
   description: string;
-  ids: number[];
+  images: IProductImage[];
   price: number;
 }
 

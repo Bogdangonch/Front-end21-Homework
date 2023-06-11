@@ -45,7 +45,7 @@ const ProductCreatePage = () => {
         values
       );
       console.log("result id = ", result.data.id);
-      navigate("/admin/products/view/");
+      navigate("/admin/products/view/" + result.data.id);
     } catch (error) {
       console.log("Send data server error");
     }

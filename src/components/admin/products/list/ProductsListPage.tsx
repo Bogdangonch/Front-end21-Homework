@@ -127,17 +127,29 @@ const ProductsListPage = () => {
     return (
       <tr key={item.id}>
         <th scope="row">{item.id}</th>
-        <td className="fw-bold">{item.name}</td>
+        <td className="fw-semibold">
+          <Link
+            style={{ textDecoration: "none", color: "black" }}
+            to={`/admin/products/view/${item.id}`}
+          >
+            {item.name}
+          </Link>
+        </td>
         <td>
           {item.images.map((img) => {
             return (
-              <span key={img}>
-                <img
-                  src={`${APP_ENV.BASE_URL}images/150_${img}`}
-                  alt="Якась фотка"
-                  width="75"
-                />
-              </span>
+              <Link
+                style={{ textDecoration: "none", color: "black" }}
+                to={`/admin/products/view/${item.id}`}
+              >
+                <span key={img}>
+                  <img
+                    src={`${APP_ENV.BASE_URL}images/150_${img}`}
+                    alt="Якась фотка"
+                    width="75"
+                  />
+                </span>
+              </Link>
             );
           })}
         </td>
